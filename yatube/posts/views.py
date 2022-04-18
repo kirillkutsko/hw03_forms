@@ -87,12 +87,12 @@ def post_edit(request, post_id):
     elif request.method == "POST":
         form = PostForm(request.POST)
         if form.is_valid:
-            post = form.save(commit=False)
-            post.author = request.user
+            res_form = form.save(commit=False)
+            res_form.author = request.user
             if form.cleaned_data["group"]:
                 group = form.cleaned_data["group"]
             text = form.cleaned_data["text"]
-            post.save()
+            res_form.save()
             return redirect("posts:post_detail", post.pk)
     else:
         return render(
