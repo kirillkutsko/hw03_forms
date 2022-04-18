@@ -16,8 +16,6 @@ ALLOWED_HOSTS = []
 
 LOGIN_URL = 'users:login'
 
-#LOGOUT_REDIRECT_URL = 'users:logout'
-
 LOGIN_REDIRECT_URL = 'posts:index'
 
 INSTALLED_APPS = [
