@@ -4,8 +4,9 @@ __pycache__/
 *$py.class
 
 
-.github
-.gitignore
+#.github
+#.gitignore
+yatube/static/
 
 # C extensions
 *.so
