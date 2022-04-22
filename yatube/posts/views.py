@@ -68,7 +68,7 @@ def post_create(request):
 
 @login_required
 def post_edit(request, post_id):
-    post = get_object_or_404(Post, id=post_id)
+    post = get_object_or_404(Post, pk=post_id)
     username = post.author
     form = PostForm(instance=post)
     text = post.text
