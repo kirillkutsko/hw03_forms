@@ -1,11 +1,12 @@
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
-from django.core.paginator import Paginator
 from django.db.models import SlugField
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
+
 from .forms import PostForm
 from .models import Group, Post
+from .utils import pagin
 
 User = get_user_model()
 
@@ -13,9 +14,7 @@ User = get_user_model()
 def index(request: HttpRequest) -> HttpResponse:
     """Вернуть HttpResponse объекта главной страницы"""
     post_list = Post.objects.all()
-    paginator = Paginator(post_list, 10)
-    page_number = request.GET.get("page")
-    page_obj = paginator.get_page(page_number)
+    page_obj = pagin(request, post_list)
     return render(request, "posts/index.html", {'page_obj': page_obj})
 
 
@@ -23,9 +22,7 @@ def group_posts(request: HttpRequest, slug: SlugField) -> HttpResponse:
     """Вернуть HttpResponse объекта страницы группы"""
     group = get_object_or_404(Group, slug=slug)
     post_list = group.posts.select_related("group").all()
-    paginator = Paginator(post_list, 10)
-    page_number = request.GET.get("page")
-    page_obj = paginator.get_page(page_number)
+    page_obj = pagin(request, post_list)
     context = {"group": group, "page_obj": page_obj}
     return render(request, "posts/group_list.html", context)
 
@@ -33,9 +30,7 @@ def group_posts(request: HttpRequest, slug: SlugField) -> HttpResponse:
 def profile(request, username):
     author = get_object_or_404(User, username=username)
     post_list = author.posts.all()
-    paginator = Paginator(post_list, 10)
-    page_number = request.GET.get("page")
-    page_obj = paginator.get_page(page_number)
+    page_obj = pagin(request, post_list)
     context = {
         "author": author,
         "page_obj": page_obj,
