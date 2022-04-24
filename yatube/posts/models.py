@@ -38,7 +38,7 @@ class Post(models.Model):
     class Meta:
         verbose_name = "Администрирование поста"
         verbose_name_plural = "Администрирование постов"
-        ordering = ["-pub_date"]
+        ordering = ("-pub_date", )
 
     def __str__(self) -> str:
         return self.text[:100]
